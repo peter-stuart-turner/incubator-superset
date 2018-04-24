@@ -2375,6 +2375,48 @@ class RoseViz(NVD3TimeSeriesViz):
         return result
 
 
+class MekkoViz(BaseViz):
+    """Tree map visualisation for hierarchical data."""
+
+    viz_type = "mekko"
+    verbose_name = _("Mekko chart")
+    credits = '<a href="https://d3js.org">d3.js</a>'
+    is_timeseries = False
+
+    def query_obj(self):
+        d = super(MekkoViz, self).query_obj()
+        fd = self.form_data
+        order_by_cols = fd.get('order_by_cols') or []
+        d['orderby'] = [json.loads(t) for t in order_by_cols]
+        return d
+
+    def get_data(self, df):
+        try:
+            x_axis = self.form_data.get('groupby')[0]
+            y_axis = self.form_data.get('groupby')[1]
+            metric = self.form_data.get('metrics')[0]
+            order_by = json.loads(self.form_data.get('order_by_cols')[0])[0] or None
+        except IndexError:
+            raise Exception('Select two columns for `groupby`')
+        except KeyError:
+            raise Exception('Invalid order by.')
+
+        else:
+            df.loc[:, metric] = df.loc[:, metric].astype(float)
+            if order_by:
+                df = df.sort_values(by=[order_by], ascending=True)
+            payload = {
+                "data": df.to_dict(orient='records'),
+                "meta": {
+                    "number_format": ",.0f",
+                    "x_axis": x_axis,
+                    "y_axis": y_axis,
+                    "metric": metric
+                }
+            }
+            return payload
+
+
 class PartitionViz(NVD3TimeSeriesViz):
 
     """

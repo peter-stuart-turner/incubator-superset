@@ -869,6 +869,27 @@ export const visTypes = {
     },
   },
 
+  mekko: {
+    label: 'Mekko',
+    controlPanelSections: [
+      {
+        label: null,
+        controlSetRows: [
+          ['metrics'],
+          ['groupby'],
+          ['order_by_cols'],
+        ],
+      },
+      {
+        label: 'Visual Tweaks',
+        controlSetRows: [
+          ['bottom_margin'],
+          ['number_format'],
+        ],
+      },
+    ],
+  },
+
   markup: {
     label: t('Markup'),
     controlPanelSections: [
