@@ -873,7 +873,8 @@ export const visTypes = {
     label: 'Mekko',
     controlPanelSections: [
       {
-        label: null,
+        label: t('Query'),
+        expanded: true,
         controlSetRows: [
           ['metrics'],
           ['groupby'],
