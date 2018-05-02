@@ -2392,6 +2392,31 @@ class MekkoViz(BaseViz):
         return d
 
     def get_data(self, df):
+        try:
+            x_axis = self.form_data.get('groupby')[0]
+            y_axis = self.form_data.get('groupby')[1]
+            metric = self.form_data.get('metrics')[0]
+            # order_by = json.loads(self.form_data.get('order_by_cols')[0])[0] or None
+            order_by = None
+        except IndexError:
+            raise Exception('Select two columns for `groupby`')
+        except KeyError:
+            raise Exception('Invalid order by.')
+
+        else:
+            df.loc[:, metric] = df.loc[:, metric].astype(float)
+            if order_by:
+                df = df.sort_values(by=[order_by], ascending=True)
+            payload = {
+                "data": df.to_dict(orient='records'),
+                "meta": {
+                    "number_format": ",.0f",
+                    "x_axis": x_axis,
+                    "y_axis": y_axis,
+                    "metric": metric
+                }
+            }
+            return payload
         # print("Dataframe", df)
         # try:
         #     order_by = json.loads(self.form_data.get('order_by_cols')[0])[0] or None
@@ -2420,36 +2445,28 @@ class MekkoViz(BaseViz):
         #             "metric": metric
         #         }
         #     }
-        payload = {
-            'mekkoData': [
-                {"market": "Auburn, AL", "segment": "Almond lovers", "value": 3840},
-                {"market": "Auburn, AL", "segment": "Berry buyers", "value": 1920},
-                {"market": "Auburn, AL", "segment": "Carrots-n-more", "value": 960},
-                {"market": "Auburn, AL", "segment": "Delicious-n-new", "value": 400},
-                {"market": "Birmingham, AL", "segment": "Almond lovers", "value": 1600},
-                {"market": "Birmingham, AL", "segment": "Berry buyers", "value": 1440},
-                {"market": "Birmingham, AL", "segment": "Carrots-n-more", "value": 960},
-                {"market": "Birmingham, AL", "segment": "Delicious-n-new", "value": 400},
-                {"market": "Gainesville, FL", "segment": "Almond lovers", "value": 640},
-                {"market": "Gainesville, FL", "segment": "Berry buyers", "value": 960},
-                {"market": "Gainesville, FL", "segment": "Carrots-n-more", "value": 640},
-                {"market": "Gainesville, FL", "segment": "Delicious-n-new", "value": 400},
-                {"market": "Durham, NC", "segment": "Almond lovers", "value": 320},
-                {"market": "Durham, NC", "segment": "Berry buyers", "value": 480},
-                {"market": "Durham, NC", "segment": "Carrots-n-more", "value": 640},
-                {"market": "Durham, NC", "segment": "Delicious-n-new", "value": 400}
-
-            ],
-            'test': [
-
-                {"a": "something", "b": "something2", "value": 2},
-                {"a": "something3", "b": "something4", "value": 4},
-                {"a": "something", "b": "something2", "value": 2},
-                {"a": "something3", "b": "something4", "value": 4},
-                     ]
-
-        }
-        return payload
+        # payload = {
+        #     'mekkoData': [
+        #         {"market": "Auburn, AL", "segment": "Almond lovers", "value": 3840},
+        #         {"market": "Auburn, AL", "segment": "Berry buyers", "value": 1920},
+        #         {"market": "Auburn, AL", "segment": "Carrots-n-more", "value": 960},
+        #         {"market": "Auburn, AL", "segment": "Delicious-n-new", "value": 400},
+        #         {"market": "Birmingham, AL", "segment": "Almond lovers", "value": 1600},
+        #         {"market": "Birmingham, AL", "segment": "Berry buyers", "value": 1440},
+        #         {"market": "Birmingham, AL", "segment": "Carrots-n-more", "value": 960},
+        #         {"market": "Birmingham, AL", "segment": "Delicious-n-new", "value": 400},
+        #         {"market": "Gainesville, FL", "segment": "Almond lovers", "value": 640},
+        #         {"market": "Gainesville, FL", "segment": "Berry buyers", "value": 960},
+        #         {"market": "Gainesville, FL", "segment": "Carrots-n-more", "value": 640},
+        #         {"market": "Gainesville, FL", "segment": "Delicious-n-new", "value": 400},
+        #         {"market": "Durham, NC", "segment": "Almond lovers", "value": 320},
+        #         {"market": "Durham, NC", "segment": "Berry buyers", "value": 480},
+        #         {"market": "Durham, NC", "segment": "Carrots-n-more", "value": 640},
+        #         {"market": "Durham, NC", "segment": "Delicious-n-new", "value": 400}
+        #
+        #     ],
+        # }
+        # return payload
 
 
 class PartitionViz(NVD3TimeSeriesViz):

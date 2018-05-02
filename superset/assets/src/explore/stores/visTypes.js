@@ -889,6 +889,20 @@ export const visTypes = {
         ],
       },
     ],
+    controlOverrides: {
+      groupby: {
+        label: t("Groupby's (eg. segment & market)"),
+        multi: true,
+        validators: [v.nonEmpty],
+        description: t('Choose two dimensions on which to group, first one picked is for the x-axis; second is for the y-axis.'),
+      },
+      metrics: {
+        label: t('Target Metric'),
+        multi: true,
+        validators: [v.nonEmpty],
+        description: t('Choose a target metric for your spider'),
+      },
+    },
   },
 
   markup: {

@@ -1,54 +1,55 @@
-/*text {*/
-  /*pointer-events: none;*/
-/*}*/
+text {
+  pointer-events: none;
+}
 
-/*.grandparent text {*/
-  /*font-weight: bold;*/
-/*}*/
-
-/*rect {*/
-  /*fill: none;*/
-  /*stroke: #fff;*/
-/*}*/
-
-/*rect.parent,*/
-/*.grandparent rect {*/
-  /*stroke-width: 2px;*/
-/*}*/
-
-/*rect.parent {*/
-    /*pointer-events: none;*/
-/*}*/
-
-/*.grandparent rect {*/
-  /*fill: #eee;*/
-/*}*/
-
-/*.grandparent:hover rect {*/
-  /*fill: #aaa;*/
-/*}*/
-
-/*.children rect.parent,*/
-/*.grandparent rect {*/
-  /*cursor: pointer;*/
-/*}*/
-
-/*.children rect.parent {*/
-  /*fill: #bbb;*/
-  /*fill-opacity: .5;*/
-/*}*/
-
-/*.children:hover rect.child {*/
-  /*fill: #bbb;*/
-/*}*/
-body {
-  font: 10px sans-serif;
+.grandparent text {
+  font-weight: bold;
 }
 
 rect {
-  stroke: #000;
+  fill: none;
+  stroke: #fff;
 }
 
-svg {
-  shape-rendering: crispEdges;
+rect.parent,
+.grandparent rect {
+  stroke-width: 2px;
 }
+
+rect.parent {
+    pointer-events: none;
+}
+
+.grandparent rect {
+  fill: #eee;
+}
+
+.grandparent:hover rect {
+  fill: #aaa;
+}
+
+.children rect.parent,
+.grandparent rect {
+  cursor: pointer;
+}
+
+.children rect.parent {
+  fill: #bbb;
+  fill-opacity: .5;
+}
+
+.children:hover rect.child {
+  fill: #bbb;
+}
+
+/*body {*/
+  /*font: 10px sans-serif;*/
+/*}*/
+
+/*rect {*/
+  /*stroke: #000;*/
+/*}*/
+
+/*svg {*/
+  /*shape-rendering: crispEdges;*/
+/*}*/
