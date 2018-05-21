@@ -1,0 +1,6 @@
+#!/Users/peterturner/Workspace/Gaussian_Engineering/software/Projects/superset/fork/incubator-superset/.venv2/bin/python2.7
+# EASY-INSTALL-DEV-SCRIPT: 'superset==0.23.0.dev0',u'superset'
+__requires__ = 'superset==0.23.0.dev0'
+__import__('pkg_resources').require('superset==0.23.0.dev0')
+__file__ = u'/Users/peterturner/Workspace/Gaussian_Engineering/software/Projects/superset/fork/incubator-superset/superset/bin/superset'
+exec(compile(open(__file__).read(), __file__, 'exec'))
