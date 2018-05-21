@@ -40,3 +40,4 @@ superset/assets/version_info.json
 *.iml
 venv
 @eaDir/
+.venv2
