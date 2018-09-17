@@ -3,9 +3,9 @@
  * and associated with each and every visualization type.
  */
 import React from 'react';
-import { D3_TIME_FORMAT_OPTIONS } from './controls';
+import {D3_TIME_FORMAT_OPTIONS} from './controls';
 import * as v from './validators';
-import { t } from '../locales';
+import {t} from '../locales';
 
 export const sections = {
   druidTimeSeries: {
@@ -64,8 +64,8 @@ export const sections = {
     {
       label: t('Advanced Analytics'),
       description: t('This section contains options ' +
-      'that allow for advanced analytical post processing ' +
-      'of query results'),
+        'that allow for advanced analytical post processing ' +
+        'of query results'),
       controlSetRows: [
         [<h1 className="section-header">{t('Moving Average')}</h1>],
         ['rolling_type', 'rolling_periods', 'min_periods'],
@@ -1041,8 +1041,8 @@ export const visTypes = {
       },
     ],
     controlOverrides: {
-      groupby: { includeTime: true },
-      columns: { includeTime: true },
+      groupby: {includeTime: true},
+      columns: {includeTime: true},
     },
   },
 
@@ -1060,10 +1060,10 @@ export const visTypes = {
     controlOverrides: {
       code: {
         default: '####Section Title\n' +
-        'A paragraph describing the section' +
-        'of the dashboard, right before the separator line ' +
-        '\n\n' +
-        '---------------',
+          'A paragraph describing the section' +
+          'of the dashboard, right before the separator line ' +
+          '\n\n' +
+          '---------------',
       },
     },
   },
@@ -1392,8 +1392,8 @@ export const visTypes = {
         label: t('Secondary Metric'),
         default: null,
         description: t('[optional] this secondary metric is used to ' +
-        'define the color as a ratio against the primary metric. ' +
-        'When omitted, the color is categorical and based on labels'),
+          'define the color as a ratio against the primary metric. ' +
+          'When omitted, the color is categorical and based on labels'),
       },
       groupby: {
         label: t('Hierarchy'),
@@ -1864,31 +1864,43 @@ export const visTypes = {
     ],
   },
 
-  partition: {
-    label: t('Partition Diagram'),
-    showOnExplore: true,
+  waterfall: {
+    label: t('Waterfall Chart'),
     controlPanelSections: [
-      sections.NVD3TimeSeries[0],
       {
-        label: t('Time Series Options'),
+        label: t('Query'),
         expanded: true,
         controlSetRows: [
-          ['time_series_option'],
+          ['metrics'],
+          ['groupby'],
+          ['columns'],
+          ['waterfall_start'],
         ],
       },
       {
         label: t('Chart Options'),
         expanded: true,
         controlSetRows: [
-          ['color_scheme'],
-          ['number_format', 'date_time_format'],
-          ['partition_limit', 'partition_threshold'],
-          ['log_scale', 'equal_date_size'],
-          ['rich_tooltip'],
+          ['color_scheme'], ['show_legend'],
         ],
       },
-      sections.NVD3TimeSeries[1],
     ],
+    controlOverrides: {
+      groupby: {
+        label: t('Series'),
+        description: t('The ordinal series for your Waterfall Chart (x-axis)'),
+      },
+      columns: {
+        label: t('Breakdowns'),
+        description: t('Defines how the series is broken down (legend)'),
+      },
+      metrics: {
+        label: t('Metric'),
+        multi: false,
+        validators: [v.nonEmpty],
+        description: t('Choose a target metric for your waterfall (y-axis)'),
+      },
+    },
   },
 };
 
@@ -1897,7 +1909,7 @@ export default visTypes;
 export function sectionsToRender(vizType, datasourceType) {
   const viz = visTypes[vizType];
 
-  const sectionsCopy = { ...sections };
+  const sectionsCopy = {...sections};
   if (viz.sectionOverrides) {
     Object.entries(viz.sectionOverrides).forEach(([section, overrides]) => {
       if (typeof overrides === 'object' && overrides.constructor === Object) {
