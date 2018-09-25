@@ -1738,6 +1738,14 @@ export const controls = {
     description: t('Defines Staring Point for the Waterfall Chart'),
   },
 
+  waterFallStartMethod: {
+    type: 'CheckboxControl',
+    label: t('Separate Starting Column'),
+    default: true,
+    renderTrigger: true,
+    description: t('When checked, the chart will use starting value to generate an initial, starting column.'),
+  },
+
   point_radius: {
     type: 'SelectControl',
     label: t('Point Radius'),

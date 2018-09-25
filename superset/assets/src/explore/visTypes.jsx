@@ -1874,7 +1874,9 @@ export const visTypes = {
           ['metrics'],
           ['groupby'],
           ['columns'],
+          ['order_by_cols'],
           ['waterfall_start'],
+          ['waterFallStartMethod'],
         ],
       },
       {

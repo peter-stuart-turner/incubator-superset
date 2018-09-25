@@ -744,6 +744,126 @@ class RoseVisTestCase(SupersetTestCase):
         self.assertEqual(expected, res)
 
 
+class WaterfallVizTestCase(SupersetTestCase):
+    def test_spider_viz_get_data(self):
+        raw = {"months": {"0": "December", "1": "April", "2": "March", "3": "June", "4": "February", "5": "November",
+                        "6": "May", "7": "January", "8": "February", "9": "August", "10": "March", "11": "April",
+                        "12": "October", "13": "May", "14": "December", "15": "November", "16": "May", "17": "October",
+                        "18": "August", "19": "September", "20": "January", "21": "October", "22": "September",
+                        "23": "July", "24": "June", "25": "April", "26": "June", "27": "September", "28": "July",
+                        "29": "July", "30": "December", "31": "August", "32": "January", "33": "November",
+                        "34": "February", "35": "March"},
+             "letter": {"0": "B", "1": "C", "2": "B", "3": "C", "4": "C", "5": "B", "6": "C", "7": "A", "8": "A",
+                        "9": "B", "10": "A", "11": "B", "12": "B", "13": "B", "14": "C", "15": "C", "16": "A",
+                        "17": "C", "18": "A", "19": "C", "20": "B", "21": "A", "22": "B", "23": "A", "24": "B",
+                        "25": "A", "26": "A", "27": "A", "28": "C", "29": "B", "30": "A", "31": "C", "32": "C",
+                        "33": "A", "34": "B", "35": "C"},
+             "SUM(value)": {"0": 4.82, "1": 4.55, "2": 4.04, "3": 3.87, "4": 3.51, "5": 3.46, "6": 3.43, "7": 3.34,
+                            "8": 3.23, "9": 2.65, "10": 2.63, "11": 2.59, "12": 2.44, "13": 2.11, "14": 2.05,
+                            "15": 1.73, "16": 1.62, "17": 1.54, "18": 1.37, "19": 1.24, "20": 0.72, "21": 0.53,
+                            "22": 0.21, "23": 0.2, "24": -0.77, "25": -1.98, "26": -2.01, "27": -2.28, "28": -2.4,
+                            "29": -2.43, "30": -3.11, "31": -3.25, "32": -3.83, "33": -3.99, "34": -4.85, "35": -4.92}}
+        df = pd.DataFrame(raw)
+
+        form_data = {
+            'metrics': { 'label': 'SUM(value)' },
+            'groupby': ['months'],
+            'columns': ['letter']
+        }
+        test_viz = viz.SpiderRadarViz(Mock(), form_data)
+        res = test_viz.get_data(df)
+        expected = self.create_example_results_complex()
+        self.assertEqual(res, expected)
+
+    def create_example_results_complex(self):
+        data = {
+            "January": {
+                "values": {
+                    "A": 6.411889089356244,
+                    "B": -4.933564872657371,
+                    "C": 7.5064988359502
+                }
+            },
+            "February": {
+                "values": {
+                    "A": 9.28837231340266,
+                    "B": 4.734079611842075,
+                    "C": 1.6774489764620404
+                }
+            },
+            "March": {
+                "values": {
+                    "A": -28.032913054304696265,
+                    "B": 2.164095500290961,
+                    "C": -8.223970330446692
+                }
+            },
+            "April": {
+                "values": {
+                    "A": 5.505422379082149,
+                    "B": 7.336040718863264,
+                    "C": 2.313209297240577
+                }
+            },
+            "May": {
+                "values": {
+                    "A": 3.3575878365872946,
+                    "B": -9.657697124618187,
+                    "C": 6.529603538261139
+                }
+            },
+            "June": {
+                "values": {
+                    "A": 9.777366046177105,
+                    "B": 3.9431007919854877,
+                    "C": 2.0885278281497452
+                }
+            },
+            "July": {
+                "values": {
+                    "A": 0.05004471616167461,
+                    "B": 5.884248478578544,
+                    "C": 3.174357557215938
+                }
+            },
+            "August": {
+                "values": {
+                    "A": 4.394202698120875,
+                    "B": 1.1238948930886572,
+                    "C": -8.175627186855278
+                }
+            },
+            "September": {
+                "values": {
+                    "A": 7.318884740372392,
+                    "B": 5.749889476447464,
+                    "C": 2.8540356515585943
+                }
+            },
+            "October": {
+                "values": {
+                    "A": -8.91158510764307,
+                    "B": 0.6006857858423009,
+                    "C": 4.19074555723162
+                }
+            },
+            "November": {
+                "values": {
+                    "A": 4.581598950908936,
+                    "B": 5.707172699642795,
+                    "C": 6.65118931229804
+                }
+            },
+            "December": {
+                "values": {
+                    "A": 2.5082861675863324,
+                    "B": 8.729835439191747,
+                    "C": 7.380643474481312
+                }
+            }
+        }
+        return data
+
 class TimeSeriesTableVizTestCase(SupersetTestCase):
 
     def test_get_data_metrics(self):

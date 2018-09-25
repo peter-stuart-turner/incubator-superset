@@ -1672,32 +1672,45 @@ class WaterfallViz(BaseViz):
     def query_obj(self):
         d = super(WaterfallViz, self).query_obj()
         fd = self.form_data
-        if (
-                len(d['groupby']) <
-                len(fd.get('groupby') or []) + len(fd.get('columns') or [])
-        ):
-            raise Exception(
-                _("Can't have overlap between Series and Breakdowns"))
-        if not fd.get('metrics'):
-            raise Exception(_('Pick at least one metric'))
-        if not fd.get('groupby'):
-            raise Exception(_('Pick at least one field for [Series]'))
-        print('Query object', d)
+        order_by_cols = fd.get('order_by_cols') or []
+        if order_by_cols:
+            d['orderby'] = [json.loads(t) for t in order_by_cols]
+            d['groupby'] += [column for column, order in d['orderby']]
+        else:
+            d['orderby'] = [[col, True] for col in d['groupby']]
         return d
 
     def get_data(self, df):
+        d = self.query_obj()
         fd = self.form_data
-        metrics = fd.get('metrics')
-        groupby = fd.get('groupby')
-        results = self.create_example_data()
-        print('metrics', metrics);
-        metric = metrics.get('label')
+        metric = d['metrics'][0]['label']
+        group_by = d['groupby']
+        order_by_cols = [json.loads(t)[0] for t in fd['order_by_cols']]
+        print('Order by cols')
+        print(order_by_cols)
+        breakdown_sorted = False
+        if len(order_by_cols) == 2:
+            breakdown_sorted = True
+        if order_by_cols != group_by:
+            group_by = [col for col in group_by if col not in order_by_cols]
+            df.drop(order_by_cols, axis=1, inplace=True)
+        for col in group_by:
+            df[col] = pd.Categorical(values=df[col], categories=df[col].unique(), ordered=True)
+        df.set_index(group_by, inplace=True)
+        if len(group_by) == 2:
+            results = {level: {'values': df.xs(level).to_dict()[metric]} for level in df.index.levels[0]}
+        else:
+            results = {name: {'value': df.xs(name).values[0]} for name in df.index}
+        print('---RESULTS----')
+        print(results)
         return {
+            'breakdown_sorted': breakdown_sorted,
             'data': results,
-            'metric': metric,
+            'metric': str(metric),
         }
 
-    def create_example_data(self):
+
+    def create_example_results_complex(self):
         data = {
             "January": {
                 "values": {
